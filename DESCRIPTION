@@ -1,0 +1,3 @@
+A reusable Django app that enables users of your site to tag items. Each user's
+tags are separated so that the auto-suggest functionality will never suggest
+tags another user has entered.
