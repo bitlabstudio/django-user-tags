@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from django_libs.tests.factories import UserFactory
 
-from user_tags.forms import DummyModelForm
+from user_tags.tests.test_app.forms import DummyModelForm
 from user_tags.models import TaggedItem, UserTag, UserTagGroup
 
 

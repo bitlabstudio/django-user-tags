@@ -48,6 +48,7 @@ EXTERNAL_APPS = [
 
 INTERNAL_APPS = [
     'django_nose',
+    'test_app',
     'user_tags',
 ]
 

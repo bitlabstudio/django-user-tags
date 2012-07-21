@@ -4,7 +4,9 @@ from django.contrib.contenttypes.models import ContentType
 import factory
 
 from django_libs.tests.factories import UserFactory
-from user_tags.models import DummyModel, TaggedItem, UserTag, UserTagGroup
+
+from user_tags.models import TaggedItem, UserTag, UserTagGroup
+from user_tags.tests.test_app.models import DummyModel
 
 
 class DummyModelFactory(factory.Factory):

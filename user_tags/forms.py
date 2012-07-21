@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 
-from user_tags.models import DummyModel, UserTagGroup, UserTag, TaggedItem
+from user_tags.models import UserTagGroup, UserTag, TaggedItem
 
 
 class UserTagsFormMixin(object):
@@ -92,14 +92,3 @@ class UserTagsFormMixin(object):
             if tag and not tag in tags:
                 tags.append(tag)
         return tags
-
-
-class DummyModelForm(UserTagsFormMixin, forms.ModelForm):
-    """We need this to test the ``UserTagsFormMixin``."""
-    class Meta:
-        model = DummyModel
-
-    def __init__(self, user=None, *args, **kwargs):
-        if user is not None:
-            self.user = user
-        super(DummyModelForm, self).__init__(*args, **kwargs)
