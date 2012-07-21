@@ -1,7 +1,7 @@
 Django User Tags
 ================
 
-__WORK IN PROGRESS. DO NOT USE THIS!__
+**WORK IN PROGRESS. DO NOT USE THIS!**
 
 A Django application for allowing users to add tags to any object. Each user's
 tags are nicely separated so that the auto-suggest functionality will never
