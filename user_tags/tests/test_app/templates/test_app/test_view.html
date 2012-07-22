@@ -1,0 +1,7 @@
+<h1>Django User Tags - Test View</h1>
+<p>This view should help you to test JavaScript related parts of this app.</p>
+<form method="post" action=".">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>

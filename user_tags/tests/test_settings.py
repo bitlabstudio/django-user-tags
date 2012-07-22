@@ -1,6 +1,7 @@
 """Settings that need to be set in order to run the tests."""
 import os
 
+DEBUG = True
 
 DATABASES={
     "default": {
@@ -29,7 +30,7 @@ COVERAGE_REPORT_HTML_OUTPUT_DIR=os.path.join(
     os.path.dirname(__file__), 'coverage')
 
 COVERAGE_MODULE_EXCLUDES = [
-    'tests$', 'settings$', 'urls$', 'locale$',
+    'tests$', 'test_app$', 'settings$', 'urls$', 'locale$',
     'migrations', 'fixtures', 'admin$', 'django_extensions',
 ]
 
@@ -48,7 +49,7 @@ EXTERNAL_APPS = [
 
 INTERNAL_APPS = [
     'django_nose',
-    'test_app',
+    'user_tags.tests.test_app',
     'user_tags',
 ]
 
