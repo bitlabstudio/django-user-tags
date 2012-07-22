@@ -1,6 +1,7 @@
-*.pyc
 *.egg-info/
+*.pyc
+.tox
 chromedriver.log
 coverage/
 dist/
-.tox
+static/

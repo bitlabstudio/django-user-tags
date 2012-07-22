@@ -3,6 +3,8 @@ import os
 
 DEBUG = True
 
+CURRENT_DIR = os.path.dirname(__file__)
+
 DATABASES={
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -14,20 +16,20 @@ ROOT_URLCONF='user_tags.tests.urls'
 
 STATIC_URL='/static/'
 
-STATIC_ROOT=os.path.join(__file__, '../../static/')
+STATIC_ROOT=os.path.join(CURRENT_DIR, '../../static/')
 
 STATICFILES_DIRS=(
-    os.path.join(__file__, 'test_static'),
+    os.path.join(CURRENT_DIR, 'test_static'),
 )
 
 TEMPLATE_DIRS=(
-    os.path.join(os.path.dirname(__file__), '../templates'),
+    os.path.join(CURRENT_DIR,'../templates'),
 )
 
-JASMINE_TEST_DIRECTORY=os.path.join(__file__, 'jasmine_tests')
+JASMINE_TEST_DIRECTORY=os.path.join(CURRENT_DIR, 'jasmine_tests')
 
 COVERAGE_REPORT_HTML_OUTPUT_DIR=os.path.join(
-    os.path.dirname(__file__), 'coverage')
+    CURRENT_DIR, 'coverage')
 
 COVERAGE_MODULE_EXCLUDES = [
     'tests$', 'test_app$', 'settings$', 'urls$', 'locale$',

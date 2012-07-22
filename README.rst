@@ -29,6 +29,17 @@ Add ``user_tags`` to your ``INSTALLED_APPS``::
         'user_tags',
     )
 
+Add jQuery and jQuery UI and tag-it to your base template::
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}user_tags/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+
+Add a jQuery UI theme and the tag-it theme to yout base template::
+
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="{{ STATIC_URL }}user_tags/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+
 Usage
 -----
 
