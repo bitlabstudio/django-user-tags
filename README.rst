@@ -58,8 +58,7 @@ First you need to modify the model that should be able to hold tags::
 
 Next you would create a ``ModelForm`` for your taggable model::
 
-   from django import forms
-
+    from django import forms
     from user_tags.forms import UserTagsFormMixin
     from your_app.models import YourModel
 
@@ -83,7 +82,7 @@ the page that holds the form::
     </script>
 
 This is just a sane set of settings that we like to use. You can of course
-tweak that to your liking. See the `tag-it documentation<https://github.com/aehlke/tag-it>`_
+tweak that to your liking. See the `tag-it documentation <https://github.com/aehlke/tag-it>`_
 for further reference.
 
 Contribute
