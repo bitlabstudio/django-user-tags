@@ -18,7 +18,11 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#mytags").tagit();
+    $(".tagItInput").tagit({
+        allowSpaces: true,
+        availableTags: ["c++", "java", "php", "javascript", "ruby", "python", "c"],
+        caseSensitive: false
+    });
 });
 </script>
 </body>

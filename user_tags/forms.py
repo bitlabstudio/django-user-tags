@@ -24,6 +24,7 @@ class UserTagsFormMixin(object):
                 required=False,
                 max_length=4000,
                 label=tag_label,
+                widget=forms.TextInput(attrs={'class': 'tagItInput'}),
             )
 
             if not instance:

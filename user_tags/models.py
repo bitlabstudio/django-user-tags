@@ -62,13 +62,18 @@ class UserTagGroup(models.Model):
     For example "weather" might be a group of tags with lot's of ``UserTag``
     objects like "sunny", "rainy" etc..
 
-    :user: A ``User`` instance.
+    :user: A ``User`` instance. Usually this should be set as it allows your
+      users to add tags to things that do not overlap with tags from other
+      user's things. If you want to use this app as a generic tagging solution
+      that should just save tags for everyone project wide, this field can be
+      empty.
     :name: The name of this tag group.
 
     """
     user = models.ForeignKey(
         'auth.User',
         verbose_name=_('User'),
+        null=True, blank=True,
     )
 
     name = models.CharField(

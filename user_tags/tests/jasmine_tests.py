@@ -9,6 +9,9 @@ from django.test import LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 
+# We are currently not testing any JS related stuff as we assume that tag-it
+# is tested well enough and we do nothing else on top of tag-it.
+
 class JasmineSeleniumTests(object):
     @classmethod
     def setUpClass(cls):

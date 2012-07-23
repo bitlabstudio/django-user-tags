@@ -1,8 +1,9 @@
 {
     "name": "Main Test Suite",
     "js_files": [
-        "/static/js/jquery-1.7.0.min.js",
-        "/static/js/jquery-ui-1.8.16.custom.min.js"
+        "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js",
+        "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js",
+        "/static/user_tags/js/tag-it.js"
     ],
     "media_files": [
     ]

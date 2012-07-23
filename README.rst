@@ -13,6 +13,7 @@ Installation
 You need to install the following prerequisites in order to use this app::
 
     pip install Django
+    pip install South
 
 If you want to install the latest stable release from PyPi::
 
@@ -29,13 +30,18 @@ Add ``user_tags`` to your ``INSTALLED_APPS``::
         'user_tags',
     )
 
-Add jQuery and jQuery UI and tag-it to your base template::
+Don't forget to migrate your database::
+
+    ./manage.py migrate user_tags
+
+Add jQuery and jQuery UI and tag-it to your base template or at least to the
+template that should display forms with tag fields::
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}user_tags/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
 
-Add a jQuery UI theme and the tag-it theme to yout base template::
+Also add a jQuery UI theme and the tag-it theme to your template::
 
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
     <link href="{{ STATIC_URL }}user_tags/css/jquery.tagit.css" rel="stylesheet" type="text/css">
@@ -43,7 +49,42 @@ Add a jQuery UI theme and the tag-it theme to yout base template::
 Usage
 -----
 
-TODO: Describe usage
+First you need to modify the model that should be able to hold tags::
+
+    class YourModel(models.Model):
+        TAG_FIELDS = [
+           ('tags', _('Tags')),
+        ]
+
+Next you would create a ``ModelForm`` for your taggable model::
+
+   from django import forms
+
+    from user_tags.forms import UserTagsFormMixin
+    from your_app.models import YourModel
+
+    class YourModelForm(UserTagsFormMixin, forms.ModelForm):
+        class Meta:
+            model = DummyModel
+
+The ``UserTagsFormMixin`` will do the magic for you and add a form field for
+every item in ``TAG_FIELDS`` on your model. These fields will have a class
+``tagItInput``, which will enable you execute the following JavaScript on
+the page that holds the form::
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".tagItInput").tagit({
+            allowSpaces: true,
+            availableTags: ["c++", "java", "php", "javascript", "ruby", "python", "c"],
+            caseSensitive: false
+        });
+    });
+    </script>
+
+This is just a sane set of settings that we like to use. You can of course
+tweak that to your liking. See the `tag-it documentation<https://github.com/aehlke/tag-it>`_
+for further reference.
 
 Contribute
 ----------
