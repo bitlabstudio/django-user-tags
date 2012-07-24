@@ -19,7 +19,7 @@ class UserTagsFormMixin(object):
         super(UserTagsFormMixin, self).__init__(*args, **kwargs)
 
         instance = kwargs.get('instance')
-        for tag_field, tag_label, witih_user in self.Meta.model.TAG_FIELDS:
+        for tag_field, tag_label, with_user in self.Meta.model.TAG_FIELDS:
             self.fields[tag_field] = forms.CharField(
                 required=False,
                 max_length=4000,
