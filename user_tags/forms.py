@@ -19,7 +19,7 @@ class UserTagsFormMixin(object):
         super(UserTagsFormMixin, self).__init__(*args, **kwargs)
 
         instance = kwargs.get('instance')
-        for tag_field, tag_label in self.Meta.model.TAG_FIELDS:
+        for tag_field, tag_label, witih_user in self.Meta.model.TAG_FIELDS:
             self.fields[tag_field] = forms.CharField(
                 required=False,
                 max_length=4000,
@@ -46,7 +46,6 @@ class UserTagsFormMixin(object):
         """Saves all tags for this instance."""
         instance = super(UserTagsFormMixin, self).save(*args, **kwargs)
 
-        tagged_item_user = None
         if hasattr(self, 'user'):
             tagged_item_user = self.user
         elif hasattr(instance, 'user'):
@@ -54,10 +53,7 @@ class UserTagsFormMixin(object):
         elif hasattr(self, 'get_user'):
             tagged_item_user = self.get_user()
         else:
-            raise Exception(
-                'Could not find a user at self.user and instance.user.'
-                ' Please provide a method self.get_user() on your form that'
-                " Returns the user who owns the saved instance and it's tags.")
+            tagged_item_user = None
 
         tagged_items = TaggedItem.objects.filter(
             content_type=ContentType.objects.get_for_model(instance),
@@ -65,16 +61,19 @@ class UserTagsFormMixin(object):
         tagged_items.delete()
         tagged_item = TaggedItem(content_object=instance)
         tagged_item.save()
-        for tag_field, tag_label in self.Meta.model.TAG_FIELDS:
+        for tag_field, tag_label, with_user in self.Meta.model.TAG_FIELDS:
             self.save_tags(tagged_item_user, tagged_item, tag_field,
-                self.cleaned_data[tag_field])
+                with_user, self.cleaned_data[tag_field])
         return instance
 
-    def save_tags(self, user, tagged_item, tag_field, tag_data):
+    def save_tags(self, user, tagged_item, tag_field, with_user, tag_data):
         try:
             group = UserTagGroup.objects.get(name=tag_field)
         except UserTagGroup.DoesNotExist:
-            group = UserTagGroup(user=user, name=tag_field)
+            the_user = None
+            if with_user:
+                the_user = user
+            group = UserTagGroup(user=the_user, name=tag_field)
             group.save()
         tags = self.split_tags(tag_data)
         for tag in tags:

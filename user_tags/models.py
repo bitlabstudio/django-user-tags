@@ -70,6 +70,9 @@ class UserTagGroup(models.Model):
     :name: The name of this tag group.
 
     """
+    class Meta:
+        unique_together = ('user', 'name')
+
     user = models.ForeignKey(
         'auth.User',
         verbose_name=_('User'),

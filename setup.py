@@ -12,7 +12,7 @@ def read(fname):
 
 setup(
     name="django-user-tags",
-    version=online_docs.__version__,
+    version=user_tags.__version__,
     description=read('DESCRIPTION'),
     long_description=read('README.rst'),
     license='The MIT License',

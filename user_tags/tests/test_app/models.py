@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 class DummyModel(models.Model):
     """Dummy model needed for testing purposes."""
     TAG_FIELDS = [
-        ('tags', _('Tags')),
-        ('mood', _('Mood')),
+        ('tags', _('Tags'), True),
+        ('global_tags', _('Global Tags'), False),
     ]
 
     name = models.CharField(

@@ -53,8 +53,19 @@ First you need to modify the model that should be able to hold tags::
 
     class YourModel(models.Model):
         TAG_FIELDS = [
-           ('tags', _('Tags')),
+           ('tags', _('Tags'), True),
+           ('global_tags', _('Global Tags'), False),
         ]
+
+``TAG_FIELDS`` is a list of 3-tuples. Each 3-tuple should have the following
+items:
+
+1. **Field name**. This will be the name of the tag group in the database and
+   also the form field's name.
+2. **Verbose name**. This will be the label of the form field.
+3. **With user**. If ``True``, the item that gets tagged must have a ForeignKey
+   to a ``User`` object or provide a ``get_user`` method. If ``False`` we
+   assume that the tags for this item are global.
 
 Next you would create a ``ModelForm`` for your taggable model::
 
