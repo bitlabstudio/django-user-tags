@@ -6,3 +6,4 @@ include README.md
 graft user_tags
 global-exclude *.orig *.pyc *.log
 prune user_tags/tests/coverage/
+prune user_tags/.ropeproject
