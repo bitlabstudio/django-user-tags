@@ -1,4 +1,6 @@
-=== 0.2 (in development) ===
+=== 0.3 (in development) ===
+
+=== 0.2 ===
 
 - BACKWARDS INCOMPATIBLE CHANGE: TAG_FIELDS is no longer a list of 3-tuples
   but a list of dictionaries. See README for more info. As a result we now
