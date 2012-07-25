@@ -1,3 +1,9 @@
+=== 0.2 (in development) ===
+
+- BACKWARDS INCOMPATIBLE CHANGE: TAG_FIELDS is no longer a list of 3-tuples
+  but a list of dictionaries. See README for more info. As a result we now
+  support to define a help_text for the tags form field.
+
 === 0.1 ===
 
 Initial commit

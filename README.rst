@@ -53,16 +53,26 @@ First you need to modify the model that should be able to hold tags::
 
     class YourModel(models.Model):
         TAG_FIELDS = [
-           ('tags', _('Tags'), True),
-           ('global_tags', _('Global Tags'), False),
+            {
+                'name': 'tags',
+                'verbose_name': _('Tags'),
+                'help_text': _('Help text'),
+                'with_user': True,
+            },
+            {
+                'name': 'global_tags',
+                'verbose_name': _('Global Tags'),
+                'with_user': False,
+            }
         ]
 
-``TAG_FIELDS`` is a list of 3-tuples. Each 3-tuple should have the following
-items:
+``TAG_FIELDS`` is a list of dictionaries. Each dictionary can have the
+following keys:
 
-1. **Field name**. This will be the name of the tag group in the database and
-   also the form field's name.
-2. **Verbose name**. This will be the label of the form field.
+1. **name (mandatory)**. This will be the name of the tag group in the
+   database and also the form field's name.
+2. **verbose_name**. This will be the label of the form field. If not provided
+   it will be the same as ``name``.
 3. **With user**. If ``True``, the item that gets tagged must have a ForeignKey
    to a ``User`` object or provide a ``get_user`` method. If ``False`` we
    assume that the tags for this item are global.

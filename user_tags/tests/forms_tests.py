@@ -10,96 +10,159 @@ from user_tags.models import TaggedItem, UserTag, UserTagGroup
 
 class UserTagsFormMixinTestCase(TestCase):
     """Tests for the ``UserTagsFormMixin`` mixin class."""
-    def test_adds_fields_to_the_form(self):
-        user = UserFactory.build()
-        form = DummyModelForm(user)
-        self.assertTrue('tags' in form.fields)
-        self.assertTrue('global_tags' in form.fields)
-
-    def test_save(self):
-        user = UserFactory.create()
-        data = {
+    def setUp(self):
+        """Creates a user and valid set of form data."""
+        self.user = UserFactory()
+        self.data = {
             'name': 'dummy',
             'tags': 'great day,family, cinema ',
             'global_tags': 'foo, bar',
         }
-        form = DummyModelForm(user, data=data)
-        self.assertTrue(form.is_valid(), msg=(
-            'Form should be valid when valid data is given'))
 
+    def test_adds_fields_to_the_form(self):
+        """
+        A form that inherits from ``UserTagsFormMixin`` should have the
+        fields that are defined on the model's ``TAG_FIELDS`` options dict
+        as form fields.
+
+        """
+        form = DummyModelForm(self.user)
+        self.assertTrue('tags' in form.fields)
+        self.assertEqual(form.fields['tags'].help_text.encode(), 'Help text')
+        self.assertTrue('global_tags' in form.fields)
+
+    def test_form_valid(self):
+        """Form should be valid when valid data is given."""
+        form = DummyModelForm(self.user, data=self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_save_returns_instance(self):
+        """
+        Save should return the saved instance when creating a new object.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
         instance = form.save()
-        self.assertTrue(instance.pk, msg=(
-            'Save should return the saved instance when creating a new'
-            ' object'))
+        self.assertTrue(instance.pk)
+
+    def test_creates_tag_group(self):
+        """
+        If the user has entered tags for a given tag field, the correct
+        user tags related objects should be created.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
 
         tag_group = UserTagGroup.objects.get(name='tags')
-        self.assertTrue(tag_group, msg=(
-            'Save should create a UserTagGroup named `tags`'))
+        user_tags = UserTag.objects.filter(user_tag_group=tag_group)
+        self.assertEqual(user_tags.count(), 3)
 
         global_tag_group = UserTagGroup.objects.get(name='global_tags')
-        self.assertEqual(global_tag_group.user, None, msg=(
-            'For a tag group that has ``False`` on the model, it should not'
-            ' be bound to any user.'))
-
-        user_tags = UserTag.objects.filter(user_tag_group=tag_group)
-        self.assertEqual(user_tags.count(), 3, msg=(
-            'Save should create UserTag objects `great day`, `family` and'
-            ' `cinema`'))
+        global_tags = UserTag.objects.filter(user_tag_group=global_tag_group)
+        self.assertEqual(global_tags.count(), 2)
 
         tagged_item = TaggedItem.objects.get(
             content_type=ContentType.objects.get_for_model(instance),
             object_id=instance.pk)
-        self.assertEqual(tagged_item.user_tags.all().count(), 5, msg=(
-            'Save should create a TaggedItem and add all UserTags to'
-            ' that item'))
+        self.assertEqual(tagged_item.user_tags.all().count(), 5)
 
-        data2 = data.copy()
+    def test_tag_group_without_user(self):
+        """
+        For a tag group that has ``'with_user':  False`` in the ``TAG_FIELDS``
+        option dict, the created tag group should not be bound to any user.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        form.save()
+        global_tag_group = UserTagGroup.objects.get(name='global_tags')
+        self.assertEqual(global_tag_group.user, None)
+
+    def test_form_should_be_valid_when_instance_given(self):
+        """
+        When instantiated with an instance, the form should, of course,
+        be valid.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
+        form = DummyModelForm(self.user, data=self.data, instance=instance)
+        self.assertTrue(form.is_valid())
+
+    def test_save_instance_re_creates_everything(self):
+        """
+        When instantiated with an instance that already has tags, those tags
+        should be deleted when the form is saved. Only the newly submitted
+        tags will get re-created.
+
+        In this test we don't touch the two existing 'global_tags' but we
+        re-submit two new 'tags' (before that group had three tags). So in
+        total we should have four tags now, not five.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
+        data2 = self.data.copy()
         data2.update({'tags': 'family, cinema', })
-        form = DummyModelForm(user, data=data2, instance=instance)
-        self.assertTrue(form.is_valid(), msg=(
-            'Form should be valid when valid data and instance is given'))
-
+        form = DummyModelForm(self.user, data=data2, instance=instance)
         instance = form.save()
         tagged_item = TaggedItem.objects.get(
             content_type=ContentType.objects.get_for_model(instance),
             object_id=instance.pk)
-        self.assertEqual(tagged_item.user_tags.all().count(), 4, msg=(
-            'When saving existing tags for that instance should be deleted'
-            ' and re-created'))
+        self.assertEqual(tagged_item.user_tags.all().count(), 4)
 
-        instance.user = user
-        form = DummyModelForm(instance=instance, data=data)
+    def test_get_user_from_instance(self):
+        """
+        If form was not instanciated with user parameter, it will try to get
+        the user from the instance.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
+        instance.user = self.user
+        form = DummyModelForm(instance=instance, data=self.data)
         self.assertTrue(form.is_valid())
-        self.assertTrue(form.save(), msg=(
-            'If form was not instanciated with user parameter, it will try'
-            ' to get the user from the instance'))
+        self.assertTrue(form.save())
 
-        delattr(instance, 'user')
-        form = DummyModelForm(instance=instance, data=data)
+    def test_get_user_method(self):
+        """
+        If form was not instantiated with suer parameter and the instance does
+        not have a user field, it will try to call a ``get_user`` method on
+        the form.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
+        form = DummyModelForm(instance=instance, data=self.data)
 
         def get_user():
-            return user
+            return self.user
 
         form.get_user = get_user
         self.assertTrue(form.is_valid())
-        self.assertTrue(form.save(), msg=(
-            'If form was not instanciated with user parameter and instance'
-            ' has no user attribute, it will try to call get_user on the'
-            ' form'))
+        self.assertTrue(form.save())
 
-        form = DummyModelForm(instance=instance, data=data)
+    def test_no_user_given(self):
+        """
+        If form was not instanciated with user parameter and instance has no
+        user attribute and not get_user method, so be it. This tag is probably
+        supposed to be global to the project.
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
+
+        form = DummyModelForm(instance=instance, data=self.data)
         self.assertTrue(form.is_valid())
-        self.assertTrue(form.save(), msg=(
-            'If form was not instanciated with user parameter and instance'
-            ' has no user attribute and not get_user method, so be it. This'
-            ' tag is probably supposed to be global to the project'))
+        self.assertTrue(form.save())
+
+    def test_no_tags(self):
+        form = DummyModelForm(self.user, data=self.data)
+        instance = form.save()
 
         TaggedItem.objects.all().delete()
-        form = DummyModelForm(instance=instance, data=data)
+        form = DummyModelForm(instance=instance, data=self.data)
         self.assertTrue(form.is_valid())
-        self.assertTrue(form.save(), msg=(
-            'If we have an instance object but there are no tags saved for'
-            ' this object at the moment, the form should still instanciate'))
 
     def test_split_tags(self):
         tags = DummyModelForm.split_tags('great day,family, cinema, ')
