@@ -1,5 +1,8 @@
 === 0.3 (in development) ===
 
+- added setting USER_TAGS_RELATED_NAME with default `user_tags_tagged_items` to
+  avoid name clashes with `django-tagging`.
+
 === 0.2 ===
 
 - BACKWARDS INCOMPATIBLE CHANGE: TAG_FIELDS is no longer a list of 3-tuples

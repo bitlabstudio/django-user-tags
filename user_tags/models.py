@@ -1,4 +1,5 @@
 """Models for the ``user_tags`` app."""
+from django.conf import settings
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -19,7 +20,11 @@ class TaggedItem(models.Model):
     :user_tag: One or many ``UserTag`` instances.
 
     """
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(
+        ContentType,
+        related_name=getattr(
+            settings, 'USER_TAGS_RELATED_NAME', 'user_tags_tagged_items'),
+    )
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 

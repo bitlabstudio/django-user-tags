@@ -106,6 +106,18 @@ This is just a sane set of settings that we like to use. You can of course
 tweak that to your liking. See the `tag-it documentation <https://github.com/aehlke/tag-it>`_
 for further reference.
 
+Settings
+--------
+
+USER_TAG_RELATED_NAME
++++++++++++++++++++++
+
+If for some reason one of your models already has a foreign key to
+``ContentType`` with a related name of ``user_tags_tagged_items`` you can
+change the related name used  by ``django-user-tags`` using this setting.
+
+Default: 'user_tags_tagged_items'
+
 Contribute
 ----------
 
