@@ -1,4 +1,6 @@
-=== 0.3 (in development) ===
+=== 0.4 (in development) ===
+
+=== 0.3 ===
 
 - added setting USER_TAGS_RELATED_NAME with default `user_tags_tagged_items` to
   avoid name clashes with `django-tagging`.
