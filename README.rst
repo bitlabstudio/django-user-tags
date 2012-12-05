@@ -127,12 +127,12 @@ If you want to contribute to this project, please perform the following steps::
     # Clone your fork
     $ mkvirtualenv -p python2.7 django-user-tags
     $ pip install -r requirements.txt
-    $ ./online_docs/tests/runtests.sh
+    $ ./user_tags/tests/runtests.sh
     # You should get no failing tests
 
     $ git co -b feature_branch master
     # Implement your feature and tests
-    $ ./online_docs/tests/runtests.sh
+    $ ./user_tags/tests/runtests.sh
     # You should still get no failing tests
     # Describe your change in the CHANGELOG.txt
     $ git add . && git commit
