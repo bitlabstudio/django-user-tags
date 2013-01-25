@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.1 ===
+
+- added admin classes for the app.
+
 === 1.0 (in development) ===
 
 - BACKWARDS INCOMPATIBLE CHANGE!! You need to change the definition of your tag

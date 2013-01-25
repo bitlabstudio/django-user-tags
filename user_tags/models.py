@@ -88,3 +88,7 @@ class UserTagGroup(models.Model):
         max_length=256,
         verbose_name=_('Name'),
     )
+
+    def __unicode__(self):
+        return '{0} of {1}'.format(
+            self.name, self.user and self.user.email or 'None')
