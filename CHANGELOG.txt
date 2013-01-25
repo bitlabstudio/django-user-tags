@@ -1,4 +1,11 @@
-=== 0.4 (in development) ===
+=== (ongoing) ===
+
+=== 1.0 (in development) ===
+
+- BACKWARDS INCOMPATIBLE CHANGE!! You need to change the definition of your tag
+  fields on your model. It is now a dict of dicts, not a list of dicts.
+- mixin now adds one `fieldname_tags_values` method for each tags field to the
+  form. This allows to easily retrieve the current values in your template.
 
 === 0.3 ===
 

@@ -5,19 +5,17 @@ from django.utils.translation import ugettext_lazy as _
 
 class DummyModel(models.Model):
     """Dummy model needed for testing purposes."""
-    TAG_FIELDS = [
-        {
-            'name': 'tags',
+    TAG_FIELDS = {
+        'tags': {
             'verbose_name': _('Tags'),
             'help_text': _('Help text'),
             'with_user': True,
         },
-        {
-            'name': 'global_tags',
+        'global_tags': {
             'verbose_name': _('Global Tags'),
             'with_user': False,
         }
-    ]
+    }
 
     name = models.CharField(
         max_length=256,

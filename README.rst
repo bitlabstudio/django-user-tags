@@ -52,28 +52,27 @@ Usage
 First you need to modify the model that should be able to hold tags::
 
     class YourModel(models.Model):
-        TAG_FIELDS = [
-            {
-                'name': 'tags',
+        TAG_FIELDS = {
+            'tags': {
                 'verbose_name': _('Tags'),
                 'help_text': _('Help text'),
                 'with_user': True,
             },
-            {
-                'name': 'global_tags',
+            'global_tags': {
                 'verbose_name': _('Global Tags'),
                 'with_user': False,
             }
-        ]
+        }
 
-``TAG_FIELDS`` is a list of dictionaries. Each dictionary can have the
+``TAG_FIELDS`` is a dictionary of dictionaries. The dictionaries can have the
 following keys:
 
-1. **name (mandatory)**. This will be the name of the tag group in the
+1. **key in main dict**. This will be the name of the tag group in the
    database and also the form field's name.
 2. **verbose_name**. This will be the label of the form field. If not provided
    it will be the same as ``name``.
-3. **With user**. If ``True``, the item that gets tagged must have a ForeignKey
+3. **help_text**. This will be the help text of the form field.
+4. **with user**. If ``True``, the item that gets tagged must have a ForeignKey
    to a ``User`` object or provide a ``get_user`` method. If ``False`` we
    assume that the tags for this item are global.
 
@@ -89,15 +88,16 @@ Next you would create a ``ModelForm`` for your taggable model::
 
 The ``UserTagsFormMixin`` will do the magic for you and add a form field for
 every item in ``TAG_FIELDS`` on your model. These fields will have a class
-``tagItInput``, which will enable you execute the following JavaScript on
-the page that holds the form::
+``tagItInput``. Additionally the mixin will add a method
+``fieldname_tags_values`` to the form (for each of your tag fields) which will
+return the available tags for that field::
 
     <script type="text/javascript">
     $(document).ready(function() {
-        $(".tagItInput").tagit({
-            allowSpaces: true,
-            availableTags: ["c++", "java", "php", "javascript", "ruby", "python", "c"],
-            caseSensitive: false
+        $("#id_fieldname").tagit({
+            allowSpaces: true
+            ,availableTags: {{ form.fieldname_tags_values|safe }}
+            ,caseSensitive: false
         });
     });
     </script>

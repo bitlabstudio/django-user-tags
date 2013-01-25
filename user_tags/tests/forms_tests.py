@@ -10,6 +10,8 @@ from user_tags.models import TaggedItem, UserTag, UserTagGroup
 
 class UserTagsFormMixinTestCase(TestCase):
     """Tests for the ``UserTagsFormMixin`` mixin class."""
+    longMessage = True
+
     def setUp(self):
         """Creates a user and valid set of form data."""
         self.user = UserFactory()
@@ -170,3 +172,38 @@ class UserTagsFormMixinTestCase(TestCase):
         self.assertEqual(tags[0], 'great day')
         self.assertEqual(tags[1], 'family')
         self.assertEqual(tags[2], 'cinema')
+
+    def test_adds_tag_list_to_form(self):
+        """
+        Should add the available tags for each given tag field to the form.
+
+        This enables users to do this in their templates::
+
+            $(document).ready(function() {
+                $('#id_skills').tagit({
+                    allowSpaces: true
+                    ,availableTags: {{ form.available_tags_technical_skills|safe }}
+                    ,caseSensitive: false
+                    ,removeConfirmation: true
+                });
+            }
+
+        """
+        form = DummyModelForm(self.user, data=self.data)
+        form.save()
+        result = form.tags_tags_values()
+        self.assertEqual(result, '["cinema", "family", "great day"]')
+        result = form.global_tags_tags_values()
+        self.assertEqual(result, '["bar", "foo"]')
+
+        user2 = UserFactory()
+        form = DummyModelForm(user2)
+        result = form.tags_tags_values()
+        self.assertEqual(result, '[]', msg=(
+            'A user should not be able to see the private tags of another'
+            ' user.'))
+
+        form = DummyModelForm()
+        result = form.tags_tags_values()
+        self.assertEqual(result, '[]', msg=(
+            'An anonymous user should not be able to see user specific tags.'))
