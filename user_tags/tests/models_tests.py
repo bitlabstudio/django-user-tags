@@ -1,11 +1,22 @@
 """Tests for the models of the ``user_tags`` app."""
 from django.test import TestCase
 
-from user_tags.tests.factories import TaggedItemFactory
+from user_tags.tests import factories
 
 
-class UserTagsTestCase(TestCase):
-    """Tests for the model classes of the ``user_tags`` apps."""
+class TaggedItemTestCase(TestCase):
     def test_instantiation_and_save(self):
-        item = TaggedItemFactory.create()
-        self.assertTrue(item.pk)
+        item = factories.TaggedItemFactory()
+        self.assertTrue(str(item))
+
+
+class UserTagTestCase(TestCase):
+    def test_instantiation_and_save(self):
+        item = factories.UserTagFactory()
+        self.assertTrue(str(item))
+
+
+class UserTagGroupTestCase(TestCase):
+    def test_instantiation_and_save(self):
+        item = factories.UserTagGroupFactory()
+        self.assertTrue(str(item))

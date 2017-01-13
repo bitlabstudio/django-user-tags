@@ -5,7 +5,6 @@ it will be part of your normal Django test suite. There is no longer any
 excuse to "forget" to run your Jasmine tests!
 
 """
-from django.test import LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 

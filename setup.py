@@ -24,12 +24,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     tests_require=[
-        'fabric',
+        'fabric3',
         'factory_boy',
-        'django-nose',
         'coverage',
         'django-coverage',
-        'selenium',
     ],
     test_suite='user_tags.tests.runtests.runtests',
 )

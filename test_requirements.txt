@@ -1,0 +1,9 @@
+fabric3
+flake8
+factory-boy
+django-libs
+coverage
+django-coverage
+django-jasmine
+tox
+selenium

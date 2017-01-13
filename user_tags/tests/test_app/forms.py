@@ -8,6 +8,7 @@ class DummyModelForm(UserTagsFormMixin, forms.ModelForm):
     """We need this to test the ``UserTagsFormMixin``."""
     class Meta:
         model = DummyModel
+        fields = '__all__'
 
     def __init__(self, user=None, *args, **kwargs):
         if user is not None:

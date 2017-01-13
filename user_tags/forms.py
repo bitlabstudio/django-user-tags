@@ -121,7 +121,7 @@ class UserTagsFormMixin(object):
         for field_name, options_dict in self.Meta.model.TAG_FIELDS.items():
             with_user = options_dict.get('with_user', True)
             self.save_tags(tagged_item_user, tagged_item, field_name,
-                with_user, self.cleaned_data[field_name])
+                           with_user, self.cleaned_data[field_name])
         return instance
 
     def save_tags(self, user, tagged_item, tag_field, with_user, tag_data):
@@ -147,6 +147,6 @@ class UserTagsFormMixin(object):
         tags = []
         for tag in tag_data.split(','):
             tag = tag.strip()
-            if tag and not tag in tags:
+            if tag and tag not in tags:
                 tags.append(tag)
         return tags

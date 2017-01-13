@@ -30,7 +30,7 @@ class UserTagsFormMixinTestCase(TestCase):
         """
         form = DummyModelForm(self.user)
         self.assertTrue('tags' in form.fields)
-        self.assertEqual(form.fields['tags'].help_text.encode(), 'Help text')
+        self.assertEqual(form.fields['tags'].help_text.encode(), b'Help text')
         self.assertTrue('global_tags' in form.fields)
 
     def test_form_valid(self):
@@ -182,7 +182,8 @@ class UserTagsFormMixinTestCase(TestCase):
             $(document).ready(function() {
                 $('#id_skills').tagit({
                     allowSpaces: true
-                    ,availableTags: {{ form.available_tags_technical_skills|safe }}
+                    ,availableTags:
+                      {{ form.available_tags_technical_skills|safe }}
                     ,caseSensitive: false
                     ,removeConfirmation: true
                 });

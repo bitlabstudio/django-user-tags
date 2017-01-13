@@ -1,11 +1,13 @@
 """Models for the ``user_tags`` app."""
 from django.conf import settings
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 
+@python_2_unicode_compatible
 class TaggedItem(models.Model):
     """
     This actually maps tags to real items.
@@ -26,14 +28,18 @@ class TaggedItem(models.Model):
             settings, 'USER_TAGS_RELATED_NAME', 'user_tags_tagged_items'),
     )
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     user_tags = models.ManyToManyField(
         'user_tags.UserTag',
         verbose_name=_('User tag'),
     )
 
+    def __str__(self):
+        return str(self.content_object)
 
+
+@python_2_unicode_compatible
 class UserTag(models.Model):
     """
     Belongs to a ``UserTagGroup`` and resembles a tag in that group.
@@ -59,7 +65,11 @@ class UserTag(models.Model):
         verbose_name=_('Text'),
     )
 
+    def __str__(self):
+        return self.text
 
+
+@python_2_unicode_compatible
 class UserTagGroup(models.Model):
     """
     Belongs to a ``User`` and resembles a group of tags.
@@ -89,6 +99,6 @@ class UserTagGroup(models.Model):
         verbose_name=_('Name'),
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0} of {1}'.format(
             self.name, self.user and self.user.email or 'None')

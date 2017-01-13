@@ -5,30 +5,30 @@ DEBUG = True
 
 CURRENT_DIR = os.path.dirname(__file__)
 
-DATABASES={
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ":memory:",
     }
 }
 
-ROOT_URLCONF='user_tags.tests.urls'
+ROOT_URLCONF = 'user_tags.tests.urls'
 
-STATIC_URL='/static/'
+STATIC_URL = '/static/'
 
-STATIC_ROOT=os.path.join(CURRENT_DIR, '../../static/')
+STATIC_ROOT = os.path.join(CURRENT_DIR, '../../static/')
 
-STATICFILES_DIRS=(
+STATICFILES_DIRS = (
     os.path.join(CURRENT_DIR, 'test_static'),
 )
 
-TEMPLATE_DIRS=(
-    os.path.join(CURRENT_DIR,'../templates'),
+TEMPLATE_DIRS = (
+    os.path.join(CURRENT_DIR, '../templates'),
 )
 
-JASMINE_TEST_DIRECTORY=os.path.join(CURRENT_DIR, 'jasmine_tests')
+JASMINE_TEST_DIRECTORY = os.path.join(CURRENT_DIR, 'jasmine_tests')
 
-COVERAGE_REPORT_HTML_OUTPUT_DIR=os.path.join(
+COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(
     CURRENT_DIR, 'coverage')
 
 COVERAGE_MODULE_EXCLUDES = [
@@ -50,7 +50,6 @@ EXTERNAL_APPS = [
 ]
 
 INTERNAL_APPS = [
-    'django_nose',
     'user_tags.tests.test_app',
     'user_tags',
 ]
@@ -58,3 +57,5 @@ INTERNAL_APPS = [
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
+
+SECRET_KEY = 'foo'
