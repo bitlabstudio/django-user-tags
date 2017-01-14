@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.2.1 ===
+
+- Added migrations
+
 === 1.2 ===
 
 - Prepared app for Django 1.10 and Python 3

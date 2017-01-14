@@ -6,12 +6,11 @@ functionality. This helps testing the JavaScript related parts of this app
 without needing to setup a full blown Django project.
 
 """
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import url
 
 from user_tags.tests.test_app.views import TestView
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', TestView.as_view(), name='user_tags_test_view'),
-)
+]

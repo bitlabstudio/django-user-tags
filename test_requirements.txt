@@ -4,6 +4,5 @@ factory-boy
 django-libs
 coverage
 django-coverage
-django-jasmine
 tox
 selenium
